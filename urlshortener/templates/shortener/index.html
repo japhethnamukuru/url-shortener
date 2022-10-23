@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="vieport" content="width=device-width, initial-scale=1.0">
+        <title>django url shortener</title>
+    </head>
+    <body>
+        <main class="main">
+            <h1>url shortener</h1>
+            <form id="post-form">
+                {% csrf_token %}
+                <input type="text" id="link" name="link" placeholder="paste url">
+                <div class="button">
+                    <button type="submit" id="shorten">shorten</button>
+                </div>
+            </form>
+            <section>
+                <h2></h2>
+            </section>
+        </main>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script type="text/javascript">
+            $(document).on('submit', '#post-form', function(e){
+                e.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/create/',
+                    data: {
+                        link:$('#link').val(),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                    success:function(data){
+                        $('h2').html("localhost:8000/"+data)
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
